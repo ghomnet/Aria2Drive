@@ -5,22 +5,22 @@ echo "    ################################################"
 echo "    #                                              #"
 echo "    #                   Aria2Drive                 #"
 echo "    #                  https://pa.ci               #"
-echo "    #                   Version 0.1                #"
+echo "    #                  Version 0.1.1               #"
 echo "    ################################################"
 
-#check system pure debian 9
+#check system pure debian
 echo -e ""
-if cat /etc/*-release | grep -Eqi "debian gnu/linux 9"; then
-  echo "Debian 9"
+if cat /etc/*-release | grep -Eqi "debian"; then
+  echo "Debian"
 else
-  echo "Only Debain 9 is supported"
+  echo "Only Debain is supported"
   echo "***EXIT***"
   sleep 1
   exit
 fi
 if dpkg -l | grep -Eqi "nginx|apache|caddy"; then
   echo "System is modified"
-  echo "Pure Debain 9 is needed"
+  echo "Pure Debain is needed"
   echo "***EXIT***"
   sleep 1
   exit
@@ -65,8 +65,8 @@ systemctl reload nginx
 
 #install oneindex
 cd /home
-git clone https://github.com/donwa/oneindex.git
-mv oneindex/* /var/www/html/
+git clone https://github.com/ikym/Oneindex.git
+mv Oneindex/* /var/www/html/
 cd /var/www/html
 wget --no-check-certificate -O robots.txt https://raw.githubusercontent.com/uselibrary/Aria2Drive/master/robots.txt
 rm README.md
@@ -98,7 +98,10 @@ systemctl start aria2
 
 #install ssl
 cd /home
-apt install certbot python-certbot-nginx -y
+apt install snapd
+snap install core
+snap install --classic certbot
+ln -s /snap/bin/certbot /usr/bin/certbot
 certbot --nginx
 
 #install rclone
